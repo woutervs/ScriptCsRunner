@@ -30,7 +30,7 @@ namespace ScriptCSRunner
         {
             InitializeComponent();
 
-            var di = new DirectoryInfo("Scripts");
+            var di = new DirectoryInfo(@"C:\Scripts");
             if (!di.Exists) di.Create();
             else _model.Scripts.AddRange(di.EnumerateFiles("*.csx").Select(CreateScript));
 
