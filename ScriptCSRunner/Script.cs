@@ -28,7 +28,7 @@ namespace ScriptCSRunner
                 var services = builder.Build();
                 var executor = services.Executor;
                 executor.Initialize(Enumerable.Empty<string>(), Enumerable.Empty<IScriptPack>());
-                executor.Execute(file.FullName);
+                executor.Execute(file.FullName, Arguments);
 
             });
             ActionBeforeClick = actionBeforeClick;
@@ -51,5 +51,7 @@ namespace ScriptCSRunner
             var script = obj as Script;
             return script != null && Equals(script);
         }
+
+        public string[] Arguments { get; set; } = {};
     }
 }

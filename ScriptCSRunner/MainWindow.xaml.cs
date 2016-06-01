@@ -1,21 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 using NuGet;
 
 namespace ScriptCSRunner
@@ -25,7 +11,7 @@ namespace ScriptCSRunner
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowViewModel _model = new MainWindowViewModel();
+        private readonly MainWindowViewModel _model = new MainWindowViewModel();
         public MainWindow()
         {
             InitializeComponent();
@@ -72,7 +58,18 @@ namespace ScriptCSRunner
 
         private Script CreateScript(FileInfo fi)
         {
-            if (fi.Exists) return new Script(System.IO.Path.GetFileNameWithoutExtension(fi.Name), fi, ()=>_model.TextBoxOutput = "");
+            if (fi.Exists)
+            {
+                var script = new Script(Path.GetFileNameWithoutExtension(fi.Name), fi, () => _model.TextBoxOutput = "");
+                _model.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == nameof(_model.Arguments))
+                    {
+                        script.Arguments = _model.Arguments.Split(';').Select(x=>x.Trim()).ToArray();
+                    }
+                };
+                return script;
+            }
             return null;
         }
     }

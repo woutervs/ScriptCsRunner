@@ -20,6 +20,20 @@ namespace ScriptCSRunner
             }
         }
 
+        private string _arguments;
+
+        public string Arguments
+        {
+            get { return _arguments; }
+            set
+            {
+                if (_arguments == value) return;
+                _arguments = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
